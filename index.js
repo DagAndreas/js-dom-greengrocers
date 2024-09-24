@@ -83,7 +83,22 @@ function renderStore() {
 renderStore();
 
 function onCartButtonClick(item) {
+
+  // check if already exists
+  const existingCartItem = cartList.querySelector(`[data-id="${item.id}"]`);
+
+  if (existingCartItem) {
+    const cartItemSpan = existingCartItem.querySelector(".quantity-text");
+    const currentAmount = parseInt(cartItemSpan.textContent, 10);
+    cartItemSpan.textContent = currentAmount + 1;
+
+    updatePrice(item.price);
+    return;
+  }
+
+  // Create a new cart item if it doesn't exist
   let cartItem = document.createElement("li");
+  cartItem.setAttribute("data-id", item.id);
 
   let cartItemImage = document.createElement("img");
   cartItemImage.classList.add("cart--item-icon");
@@ -119,11 +134,12 @@ function onCartButtonClick(item) {
   cartItem.appendChild(cartItemAddButton);
 
   // Add the list item to the cart
-  // TODO: check for duplicates?
   cartList.appendChild(cartItem);
 
-  updatePrice(item.price)
+  // Update the total price
+  updatePrice(item.price);
 }
+
 
 function removeFromCart(cartItem, item) {
   // get amount in cart
