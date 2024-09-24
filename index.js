@@ -9,25 +9,25 @@ const state = {
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35,
+      price: 0.31,
       category: "greens",
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35,
+      price: 0.37,
       category: "fruit",
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35,
+      price: 0.39,
       category: "fruit",
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35,
+      price: 0.34,
       category: "fruit",
     },
     {
@@ -39,25 +39,25 @@ const state = {
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35,
+      price: 0.39,
       category: "greens",
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35,
+      price: 0.38,
       category: "berry",
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35,
+      price: 0.34,
       category: "berry",
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35,
+      price: 0.29,
       category: "greens",
     },
   ],
@@ -70,23 +70,58 @@ const storeList = document.querySelector(".store--item-list")
 const cartList = document.querySelector(".cart--item-list")
 
 const categoryFilter = document.getElementById("categoryFilter")
+
+const sortFilter = document.getElementById("sortFilter")
+
 // Filter items based on the selected category
 categoryFilter.addEventListener("change", function () {
   const selectedCategory = categoryFilter.value
-
+    const selectedOrder = sortFilter.value
 
   if (selectedCategory === "all") {
-    renderStore((item) => true)
+    renderStore((item) => true, selectedOrder)
   } else {
-    renderStore((item) => item.category === selectedCategory)
+    renderStore((item) => item.category === selectedCategory, selectedOrder)
   }
 })
 
-function renderStore(filter) {
+
+sortFilter.addEventListener("change", function () {
+  const selectedFilter = categoryFilter.value
+  const selectedOrder = sortFilter.value
+
+  if (selectedFilter === "all") {
+    renderStore((item) => true, selectedOrder)
+  } else {
+    renderStore((item) => item.category === selectedCategory, selectedOrder)
+  }
+})
+
+
+
+
+function renderStore(filter, order) {
+
+  let itemsList = state.items
+
+  switch (order) {
+    case 'alphabetical':
+      itemsList.sort((a, b) => a.name.localeCompare(b.name))
+      break
+      
+      case 'asc':
+        itemsList.sort((a, b) => a.price - b.price)
+        break
+        
+        case 'desc':
+      itemsList.sort((a, b) => b.price - a.price)
+      break
+  }
+
 
   storeList.innerHTML = ""
 
-  state.items.forEach((item) => {
+  itemsList.forEach((item) => {
     if (!filter(item)){
       return
     }
@@ -113,7 +148,7 @@ function renderStore(filter) {
 }
 
 
-renderStore((x) => true)
+renderStore((x) => true, 'asc')
 
 function onCartButtonClick(item) {
 
