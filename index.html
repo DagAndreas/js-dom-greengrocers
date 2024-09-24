@@ -12,6 +12,16 @@
   <body>
     <header id="store">
       <h1>Greengrocers</h1>
+
+      <!-- Dropdown for category filter -->
+      <label for="categoryFilter">Filter by category:</label>
+      <select id="categoryFilter">
+        <option value="all">All</option>
+        <option value="fruit">Fruit</option>
+        <option value="berry">Berry</option>
+        <option value="greens">Greens</option>
+      </select>
+
       <ul class="item-list store--item-list">
         <!-- Take a look at store-item.html -->
       </ul>
@@ -19,9 +29,9 @@
 
     <main id="cart">
       <h2>Your Cart</h2>
-          <!-- add filter -->
-          <!-- add a sort -->
-           
+      <!-- add filter -->
+      <!-- add a sort -->
+
       <div class="cart--item-list-container">
         <ul class="item-list cart--item-list">
           <!-- Take a look at cart-item.html -->
@@ -50,4 +60,3 @@
     </div>
   </body>
 </html>
-

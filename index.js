@@ -69,8 +69,28 @@ const storeList = document.querySelector(".store--item-list")
 
 const cartList = document.querySelector(".cart--item-list")
 
-function renderStore() {
+const categoryFilter = document.getElementById("categoryFilter")
+// Filter items based on the selected category
+categoryFilter.addEventListener("change", function () {
+  const selectedCategory = categoryFilter.value
+
+
+  if (selectedCategory === "all") {
+    renderStore((item) => true)
+  } else {
+    renderStore((item) => item.category === selectedCategory)
+  }
+})
+
+function renderStore(filter) {
+
+  storeList.innerHTML = ""
+
   state.items.forEach((item) => {
+    if (!filter(item)){
+      return
+    }
+
     let newItem = document.createElement("li")
 
     let newItemDiv = document.createElement("div")
@@ -91,7 +111,9 @@ function renderStore() {
     storeList.appendChild(newItem)
   })
 }
-renderStore()
+
+
+renderStore((x) => true)
 
 function onCartButtonClick(item) {
 
@@ -187,4 +209,6 @@ function updatePrice(deltaPrice) {
 
   priceSpan.textContent = "£" + newPrice.toFixed(2)
 }
+
+
 
