@@ -84,35 +84,36 @@ renderStore()
 
 
 function onCartButtonClick(item) {
-  // Create list item (li)
   let cartItem = document.createElement('li')
 
-  // Create the image element
   let cartItemImage = document.createElement('img')
   cartItemImage.classList.add('cart--item-icon')
   cartItemImage.src = `assets/icons/${item.id}.svg`
   cartItemImage.alt = item.name
 
-  // Create the paragraph element for the item name
   let cartItemParagraph = document.createElement('p')
   cartItemParagraph.textContent = item.name
 
-  // Create the remove button (-)
   let cartItemRemoveButton = document.createElement('button')
   cartItemRemoveButton.classList.add('quantity-btn', 'remove-btn', 'center')
   cartItemRemoveButton.textContent = '-'
-  // TODO: Add remove-from-cart button click event handler here
+  // TODO: Add remove-from-cart
+  cartItemRemoveButton.addEventListener("click", function(){
+    removeFromCart(cartItem)
+  })
+  
 
-  // Create the span element to display the quantity
   let cartItemSpan = document.createElement('span')
   cartItemSpan.classList.add('quantity-text', 'center')
-  cartItemSpan.textContent = '1' // Default quantity set to 1
+  cartItemSpan.textContent = '1'
 
-  // Create the add button (+)
   let cartItemAddButton = document.createElement('button')
   cartItemAddButton.classList.add('quantity-btn', 'add-btn', 'center')
   cartItemAddButton.textContent = '+'
   // TODO: Add add-to-cart button click event handler here
+  cartItemAddButton.addEventListener('click', function(){
+    addToCart(cartItem)
+  })
 
   // Append children to the list item
   cartItem.appendChild(cartItemImage)
@@ -122,6 +123,33 @@ function onCartButtonClick(item) {
   cartItem.appendChild(cartItemAddButton)
 
   // Add the list item to the cart
-  // TODO: check for duplicates
+  // TODO: check for duplicates?
   cartList.appendChild(cartItem)
+}
+
+
+function removeFromCart(cartItem){
+  // get amount in cart
+  const cartItemSpan = cartItem.querySelector('.quantity-text');
+  const currentAmount = parseInt(cartItemSpan.textContent, 10);
+
+  if (currentAmount > 1){
+    cartItemSpan.textContent = currentAmount - 1;
+    return;
+  }
+  
+  // remove dom
+  cartItem.remove()
+}
+
+function addToCart(cartItem){
+  // get current amount
+  const cartItemSpan = cartItem.querySelector('.quantity-text');
+  const currentAmount = parseInt(cartItemSpan.textContent, 10);
+
+  cartItemSpan.textContent = currentAmount + 1;
+}
+
+function updatePrice(){
+  
 }
