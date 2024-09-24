@@ -4,175 +4,187 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
+      category: "greens",
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
+      category: "greens",
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
+      category: "fruit",
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
+      category: "fruit",
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
+      category: "fruit",
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
+      category: "fruit",
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
+      category: "greens",
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
+      category: "berry",
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
+      category: "berry",
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
+      category: "greens",
     },
   ],
   cart: [],
-};
+}
 
-const storeList = document.querySelector(".store--item-list");
 
-const cartList = document.querySelector(".cart--item-list");
+const storeList = document.querySelector(".store--item-list")
+
+const cartList = document.querySelector(".cart--item-list")
 
 function renderStore() {
   state.items.forEach((item) => {
-    let newItem = document.createElement("li");
+    let newItem = document.createElement("li")
 
-    let newItemDiv = document.createElement("div");
+    let newItemDiv = document.createElement("div")
 
-    let newItemDivImage = document.createElement("img");
-    newItemDivImage.src = `assets/icons/${item.id}.svg`;
+    let newItemDivImage = document.createElement("img")
+    newItemDivImage.src = `assets/icons/${item.id}.svg`
 
-    let newItemButton = document.createElement("button");
-    newItemButton.textContent = "Add to cart";
+    let newItemButton = document.createElement("button")
+    newItemButton.textContent = "Add to cart"
     newItemButton.addEventListener("click", function () {
-      onCartButtonClick(item);
-    });
+      onCartButtonClick(item)
+    })
 
     // add childs
-    newItemDiv.appendChild(newItemDivImage);
-    newItem.appendChild(newItemDiv);
-    newItem.appendChild(newItemButton);
-    storeList.appendChild(newItem);
-  });
+    newItemDiv.appendChild(newItemDivImage)
+    newItem.appendChild(newItemDiv)
+    newItem.appendChild(newItemButton)
+    storeList.appendChild(newItem)
+  })
 }
-renderStore();
+renderStore()
 
 function onCartButtonClick(item) {
 
   // check if already exists
-  const existingCartItem = cartList.querySelector(`[data-id="${item.id}"]`);
+  const existingCartItem = cartList.querySelector(`[data-id="${item.id}"]`)
 
   if (existingCartItem) {
-    const cartItemSpan = existingCartItem.querySelector(".quantity-text");
-    const currentAmount = parseInt(cartItemSpan.textContent, 10);
-    cartItemSpan.textContent = currentAmount + 1;
+    const cartItemSpan = existingCartItem.querySelector(".quantity-text")
+    const currentAmount = parseInt(cartItemSpan.textContent, 10)
+    cartItemSpan.textContent = currentAmount + 1
 
-    updatePrice(item.price);
-    return;
+    updatePrice(item.price)
+    return
   }
 
   // Create a new cart item if it doesn't exist
-  let cartItem = document.createElement("li");
-  cartItem.setAttribute("data-id", item.id);
+  let cartItem = document.createElement("li")
+  cartItem.setAttribute("data-id", item.id)
 
-  let cartItemImage = document.createElement("img");
-  cartItemImage.classList.add("cart--item-icon");
-  cartItemImage.src = `assets/icons/${item.id}.svg`;
-  cartItemImage.alt = item.name;
+  let cartItemImage = document.createElement("img")
+  cartItemImage.classList.add("cart--item-icon")
+  cartItemImage.src = `assets/icons/${item.id}.svg`
+  cartItemImage.alt = item.name
 
-  let cartItemParagraph = document.createElement("p");
-  cartItemParagraph.textContent = item.name;
+  let cartItemParagraph = document.createElement("p")
+  cartItemParagraph.textContent = item.name
 
-  let cartItemRemoveButton = document.createElement("button");
-  cartItemRemoveButton.classList.add("quantity-btn", "remove-btn", "center");
-  cartItemRemoveButton.textContent = "-";
+  let cartItemRemoveButton = document.createElement("button")
+  cartItemRemoveButton.classList.add("quantity-btn", "remove-btn", "center")
+  cartItemRemoveButton.textContent = "-"
   cartItemRemoveButton.addEventListener("click", function () {
-    removeFromCart(cartItem, item);
-  });
+    removeFromCart(cartItem, item)
+  })
 
-  let cartItemSpan = document.createElement("span");
-  cartItemSpan.classList.add("quantity-text", "center");
-  cartItemSpan.textContent = "1";
+  let cartItemSpan = document.createElement("span")
+  cartItemSpan.classList.add("quantity-text", "center")
+  cartItemSpan.textContent = "1"
 
-  let cartItemAddButton = document.createElement("button");
-  cartItemAddButton.classList.add("quantity-btn", "add-btn", "center");
-  cartItemAddButton.textContent = "+";
+  let cartItemAddButton = document.createElement("button")
+  cartItemAddButton.classList.add("quantity-btn", "add-btn", "center")
+  cartItemAddButton.textContent = "+"
   cartItemAddButton.addEventListener("click", function () {
-    addToCart(cartItem, item);
-  });
+    addToCart(cartItem, item)
+  })
 
   // Append children to the list item
-  cartItem.appendChild(cartItemImage);
-  cartItem.appendChild(cartItemParagraph);
-  cartItem.appendChild(cartItemRemoveButton);
-  cartItem.appendChild(cartItemSpan);
-  cartItem.appendChild(cartItemAddButton);
+  cartItem.appendChild(cartItemImage)
+  cartItem.appendChild(cartItemParagraph)
+  cartItem.appendChild(cartItemRemoveButton)
+  cartItem.appendChild(cartItemSpan)
+  cartItem.appendChild(cartItemAddButton)
 
   // Add the list item to the cart
-  cartList.appendChild(cartItem);
+  cartList.appendChild(cartItem)
 
   // Update the total price
-  updatePrice(item.price);
+  updatePrice(item.price)
 }
 
 
 function removeFromCart(cartItem, item) {
   // get amount in cart
-  const cartItemSpan = cartItem.querySelector(".quantity-text");
-  const currentAmount = parseInt(cartItemSpan.textContent, 10);
+  const cartItemSpan = cartItem.querySelector(".quantity-text")
+  const currentAmount = parseInt(cartItemSpan.textContent, 10)
 
   if (currentAmount > 1) {
-    cartItemSpan.textContent = currentAmount - 1;
-    return;
+    cartItemSpan.textContent = currentAmount - 1
+    return
   }
 
   // remove dom
-  cartItem.remove();
+  cartItem.remove()
 
-  updatePrice(0 - item.price);
+  updatePrice(0 - item.price)
 }
 
 function addToCart(cartItem, item) {
   // get current amount
-  const cartItemSpan = cartItem.querySelector(".quantity-text");
-  const currentAmount = parseInt(cartItemSpan.textContent, 10);
+  const cartItemSpan = cartItem.querySelector(".quantity-text")
+  const currentAmount = parseInt(cartItemSpan.textContent, 10)
 
-  cartItemSpan.textContent = currentAmount + 1;
+  cartItemSpan.textContent = currentAmount + 1
 
-  updatePrice(item.price);
+  updatePrice(item.price)
 }
 
-const priceSpan = document.querySelector(".total-number");
+const priceSpan = document.querySelector(".total-number")
 function updatePrice(deltaPrice) {
-  const currPriceText = priceSpan.textContent.replace('£', '').trim();
-  const currPrice = parseFloat(currPriceText, 10);
+  const currPriceText = priceSpan.textContent.replace('£', '').trim()
+  const currPrice = parseFloat(currPriceText, 10)
 
-  const newPrice = currPrice + deltaPrice;
+  const newPrice = currPrice + deltaPrice
 
-  priceSpan.textContent = "£" + newPrice.toFixed(2);
+  priceSpan.textContent = "£" + newPrice.toFixed(2)
 }
+
